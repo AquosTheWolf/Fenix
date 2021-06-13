@@ -35,7 +35,15 @@
     "typescript": "^4.2.4"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "rm -rf dist/; tsc; node dist/index.js",
+    "production": "rm -rf dist/; tsc; yarn cp; node dist/index.js;",
+    "win": "del /Q /S dist && tsc && node dist/index.js",
+    "lint": "eslint --fix src/*/*/*",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "dev:build": "tsc -w",
+    "dev:run": "nodemon dist/index.js",
+    "cp": "cpx ./src/api/certificate.pem dist/api;cpx ./src/api/private.pem dist/api;"
   },
   "repository": {
     "type": "git",

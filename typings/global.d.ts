@@ -11,7 +11,7 @@ declare global {
     coinDropArray?: number[];
   }
 
-  export interface Console extends Console {
+  export interface Console {
     logs: any[];
     stdlog: { (...data: any[]): void; (message?: any, ...optionalParams: any[]): void; };
   }
