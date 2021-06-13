@@ -44,6 +44,8 @@ const commands = new CommandLoader(client, {
 const events = new EventLoader(client, { directory: "dist/events" });
 
 // Extending Client
+client["fdevsLog"] = `${chalk.cyanBright("[FurDevs - Log]")}`;
+client["fdevsError"] = `${chalk.redBright("[FurDevs - Error]")}`;
 client["bumpEnmap"] = new enmap({ name: "enmap" });
 client["commands"] = commands;
 client["events"] = events;
