@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Document, model, Schema } from "mongoose";
 
 const MembersSchema: Schema = new Schema({
     guildID: {
@@ -30,3 +30,14 @@ const MembersSchema: Schema = new Schema({
         default: 0,
     },
 });
+
+export interface IMember extends Document {
+    guildID: string
+    userID: string
+    bankCoins: number
+    coins: number
+    reps: number
+    xp: number
+}
+
+export const Member = model<IMember>('Member', MembersSchema)

@@ -12,7 +12,7 @@ const ClientSchema: Schema = new Schema({
     },
 });
 
-interface IClient extends Document {
+export interface IClient extends Document {
     whiteListedGuilds: string[];
     maintenance: boolean;
 }

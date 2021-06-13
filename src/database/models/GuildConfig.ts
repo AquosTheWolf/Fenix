@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Document, model, Schema } from "mongoose";
 
 const GuildSchema: Schema = new Schema({
     guildID: {
@@ -42,3 +42,16 @@ const GuildSchema: Schema = new Schema({
         default: [],
     },
 });
+
+export interface IGuild extends Document {
+    guildID: string;
+    prefix: string;
+    disabledCommands: string[];
+    bankerRole: string;
+    bumpingChannel: string;
+    staffMembers: string[];
+    reputationSystem: boolean;
+    programmingChannels: string[];
+}
+
+export const Guild = model<IGuild>("Guild", GuildSchema);
