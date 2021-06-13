@@ -21,8 +21,8 @@ module.exports = class extends Command {
      * @param client
      */
     async run(message: Message, args: string[], client: FurClient) {
-        message.delete();
-        const msg = await message.channel.send("Flying...");
+        message.delete().catch(() => {});
+        const msg = await message.channel.send("Pinging...");
         const embed = new MessageEmbed()
             .setTitle("Ping")
             .addField("ws/API Latency", `${Math.round(client.ws.ping)}ms`)
@@ -33,6 +33,8 @@ module.exports = class extends Command {
             .setColor(settings.primaryColor)
             .setTimestamp()
             .setFooter(`User ID: ${message.author.id}`);
-        message.channel.send(embed);
+        msg.edit("", {
+            embed,
+        });
     }
 };
