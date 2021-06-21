@@ -24,14 +24,14 @@ console.log(String.raw`                                       `);
 
 // Initialize the Client with NukeJS
 const client: FurClient = new Client({
-    discordOptions: { disableMentions: "everyone" },
+    discordOptions: { disableMentions: "everyone", fetchAllMembers: true },
     readyMessage: "I have started! {username}",
-    owner: "679145795714416661",
+    owner: "852070153804972043",
     devIds: [
         "216037365829992448",
         "388157815136452609",
         "562086061153583122",
-        "679145795714416661",
+        "852070153804972043",
         "436565164674908170",
     ],
 });
@@ -103,7 +103,7 @@ client.on("ready", async () => {
         .setThumbnail(
             "https://cdn.discordapp.com/emojis/758388154465517578.png?v=1"
         );
-    client.users.cache.get("679145795714416661")?.send(embed);
+    client.users.cache.get("852070153804972043")?.send(embed);
 
     // Sets the Status
     client.user?.setActivity({
