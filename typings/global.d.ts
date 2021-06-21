@@ -1,6 +1,6 @@
-import discord from 'discord.js'
+import discord, { Collection } from 'discord.js'
 import Enmap from 'enmap';
-import nukejs from 'nukejs'
+import nukejs, { Command, CommandLoader, EventLoader } from 'nukejs'
 
 declare global {
   export class FurClient extends nukejs.Client {
@@ -9,6 +9,8 @@ declare global {
     fwebsLog?: string;
     bumpEnmap?: Enmap;
     coinDropArray?: number[];
+    commands?: Collection<string, Command>
+    events?: EventLoader;
   }
 
   export interface Console {

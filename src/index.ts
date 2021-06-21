@@ -47,7 +47,7 @@ const events = new EventLoader(client, { directory: "dist/events" });
 client["fdevsLog"] = `${chalk.cyanBright("[FurDevs - Log]")}`;
 client["fdevsError"] = `${chalk.redBright("[FurDevs - Error]")}`;
 client["bumpEnmap"] = new enmap({ name: "enmap" });
-client["commands"] = commands;
+client["commands"] = commands.Commands;
 client["events"] = events;
 
 mongoose
@@ -97,7 +97,7 @@ client.on("ready", async () => {
     const clientSettings = await ClientDB.findOne({ id: 1 });
     if (!clientSettings) ClientDB.create({ id: 1 });
     const embed = new MessageEmbed()
-        .setTitle("Hozol is ready!")
+        .setTitle("Fenix is ready!")
         .setColor(settings.primaryColor)
         .addField("Version", require("./../package.json").version)
         .setThumbnail(
