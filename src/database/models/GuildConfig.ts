@@ -15,7 +15,7 @@ const GuildSchema: Schema = new Schema({
 
     disabledCommands: {
         type: Array,
-        required: true,
+        default: [],
     },
 
     bankerRole: {
@@ -27,9 +27,15 @@ const GuildSchema: Schema = new Schema({
         type: String,
         default: null,
     },
+
+    staffBumpingChannel: {
+        type: String,
+        default: null,
+    },
+
     staffMembers: {
         type: Array,
-        default: null,
+        default: [],
     },
 
     reputationSystem: {
@@ -37,10 +43,25 @@ const GuildSchema: Schema = new Schema({
         default: false,
     },
 
-    programmingChannels: {
-        type: Array,
-        default: [],
+    programmingCategory: {
+        type: String,
+        default: null,
     },
+
+    communityProjectsCategory: {
+        type: String,
+        default: null,
+    },
+    
+    communityProjectsLimit: {
+        type: Number,
+        default: 3
+    },
+
+    communityRequiredRole: {
+        type: String,
+        default: null
+    }
 });
 
 export interface IGuild extends Document {
@@ -51,7 +72,11 @@ export interface IGuild extends Document {
     bumpingChannel: string;
     staffMembers: string[];
     reputationSystem: boolean;
-    programmingChannels: string[];
+    programmingCategory: string;
+    staffBumpingChannel: string;
+    communityProjectsCategory: string;
+    communityProjectsLimit: number;
+    communityRequiredRole: string
 }
 
 export const Guild = model<IGuild>("Guild", GuildSchema);
