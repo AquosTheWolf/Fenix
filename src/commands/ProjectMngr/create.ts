@@ -62,6 +62,31 @@ module.exports = class extends Command {
             .setTimestamp()
             .setFooter(`User ID: ${message.author.id}`);
         const msg = await message.channel.send(embed);
-        // TODO: Wizard
+        await msg.react("👍");
+        await msg.react("❌");
+
+        const filter = (reaction, user) => {
+            return (
+                ((reaction.emoji.name === "👍" ||
+                reaction.emoji.name === "❌") && user.id === message.author.id)
+            );
+        };
+
+        msg.awaitReactions(filter, {
+            time: 60000,
+            errors: ['time']
+        }).then((collected) => {
+            console.log(collected)
+            switch (collected.first().emoji.name) {
+                case "👍":
+                    const messageListening = msg.channel.createMessageCollector(
+                        (m: Message) => m.author.id === message.author.id
+                    );
+                    break;
+                case "❌":
+                    msg.delete();
+                    break;
+            }
+        });
     }
 };

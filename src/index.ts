@@ -38,7 +38,17 @@ const client: FurClient = new Client({
 
 // Command & Event Loader NukeJS
 const commands = new CommandLoader(client, {
-    prefix: ">",
+    prefix: async (message) => {
+        if (message.guild) {
+            const gSettings = await message.guild.settings();
+            if (gSettings) {
+                return gSettings.prefix;
+            } else {
+                return ">";
+            }
+        }
+        return ">";
+    },
     directory: "dist/commands",
 });
 const events = new EventLoader(client, { directory: "dist/events" });
