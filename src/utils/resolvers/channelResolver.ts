@@ -9,8 +9,8 @@ export async function channelResolver(
     // Regular Channel support
     const channel = channelRegex.test(mention)
         ? await client.channels
-              .fetch(channelRegex.exec(mention)![1])
-              .catch(() => null)
+            .fetch(channelRegex.exec(mention)![1])
+            .catch(() => null)
         : null;
-    if (channel) return channel;
+    if(channel) return channel;
 }

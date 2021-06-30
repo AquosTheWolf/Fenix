@@ -1,20 +1,21 @@
-import { Message, MessageEmbed } from "discord.js";
-import { Command } from "nukejs";
-import settings from "../../settings";
+import { Message, MessageEmbed } from 'discord.js';
+import { Command } from 'nukejs';
+import settings from '../../settings';
 
-module.exports = class extends Command {
+export default class extends Command {
     constructor(file: any) {
         super(file, {
-            name: "create",
-            category: "Community Projects",
-            runIn: ["text"],
+            name: 'create',
+            category: 'Community Projects',
+            runIn: ['text'],
             aliases: [],
             cooldown: 500,
             description: `Create a Community Project Channel`,
             enabled: true,
-            ignoredInhibitors: [],
+            ignoredInhibitors: []
         });
     }
+
     /**
      * @param message
      * @param args
@@ -24,25 +25,25 @@ module.exports = class extends Command {
         await message.delete();
         const guildSettings = await message.guild.settings();
         const memberSettings = await message.member.settings();
-        if (
+        if(
             !guildSettings.communityProjectsCategory &&
             !guildSettings.communityRequiredRole
         )
             throw new Error(
-                "The Community Project Category **and/or** the community projects required role is not setup, please ping a Staff Member to set it up"
+                'The Community Project Category **and/or** the community projects required role is not setup, please ping a Staff Member to set it up'
             );
-        if (
+        if(
             !message.member.roles.cache.get(guildSettings.communityRequiredRole)
         )
             throw new Error(
-                "You don't have the required role in order to make community projects, maybe to earn the role by being active and/or picking roles if you haven't if you feel like you've been active and you have roles go ahead and nudge a Staff Member to give you one"
+                'You don\'t have the required role in order to make community projects, maybe to earn the role by being active and/or picking roles if you haven\'t if you feel like you\'ve been active and you have roles go ahead and nudge a Staff Member to give you one'
             );
-        if (
+        if(
             memberSettings.communityChannelCounts >=
             guildSettings.communityProjectsLimit
         )
             throw new Error(
-                "You have too many Community Channels, please remove one to make a new one"
+                'You have too many Community Channels, please remove one to make a new one'
             );
         const embed = new MessageEmbed()
             .setAuthor(
@@ -62,13 +63,13 @@ module.exports = class extends Command {
             .setTimestamp()
             .setFooter(`User ID: ${message.author.id}`);
         const msg = await message.channel.send(embed);
-        await msg.react("👍");
-        await msg.react("❌");
+        await msg.react('👍');
+        await msg.react('❌');
 
         const filter = (reaction, user) => {
             return (
-                ((reaction.emoji.name === "👍" ||
-                reaction.emoji.name === "❌") && user.id === message.author.id)
+                ((reaction.emoji.name === '👍' ||
+                    reaction.emoji.name === '❌') && user.id === message.author.id)
             );
         };
 
@@ -76,14 +77,14 @@ module.exports = class extends Command {
             time: 60000,
             errors: ['time']
         }).then((collected) => {
-            console.log(collected)
-            switch (collected.first().emoji.name) {
-                case "👍":
+            console.log(collected);
+            switch(collected.first().emoji.name) {
+                case '👍':
                     const messageListening = msg.channel.createMessageCollector(
                         (m: Message) => m.author.id === message.author.id
                     );
                     break;
-                case "❌":
+                case '❌':
                     msg.delete();
                     break;
             }

@@ -1,14 +1,14 @@
-import { Structures } from "discord.js";
-import { findOneOrCreateMember } from "../database";
-import { IMember, Member } from "./../database/models/MembersConfig";
+import { Structures } from 'discord.js';
+import { findOneOrCreateMember } from '../database';
+import { IMember, Member } from '../database/models/MembersConfig';
 
-declare module "discord.js" {
+declare module 'discord.js' {
     export interface GuildMember {
         settings(): Promise<IMember>;
     }
 }
 
-Structures.extend("GuildMember", (GuildMember) => {
+Structures.extend('GuildMember', (GuildMember) => {
     class FurMember extends GuildMember {
         constructor(client, data, guild) {
             super(client, data, guild);

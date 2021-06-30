@@ -1,49 +1,50 @@
-import mongoose, { Document, model, Schema } from "mongoose";
+import { Document, model, Schema } from 'mongoose';
 
 const MembersSchema: Schema = new Schema({
     guildID: {
         type: String,
-        required: true,
+        required: true
     },
+
     userID: {
         type: String,
-        required: true,
+        required: true
     },
 
     bankCoins: {
         type: Number,
-        default: 0,
+        default: 0
     },
 
     coins: {
         type: Number,
-        default: 0,
+        default: 0
     },
 
     reps: {
         type: Number,
-        default: 0,
+        default: 0
     },
 
     xp: {
         type: Number,
-        default: 0,
+        default: 0
     },
 
     communityChannelCounts: {
         type: Number,
-        default: 0,
-    },
+        default: 0
+    }
 });
 
 export interface IMember extends Document {
-    guildID: string
-    userID: string
-    bankCoins: number
-    coins: number
-    reps: number
-    xp: number
-    communityChannelCounts: number
+    guildID: string;
+    userID: string;
+    bankCoins: number;
+    coins: number;
+    reps: number;
+    xp: number;
+    communityChannelCounts: number;
 }
 
-export const Member = model<IMember>('Member', MembersSchema)
+export const Member = model<IMember>('Member', MembersSchema);

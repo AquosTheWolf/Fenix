@@ -1,7 +1,7 @@
 import { Message } from 'discord.js';
 import { Command } from 'nukejs';
 
-module.exports = class extends Command {
+export default class extends Command {
     constructor(file: any) {
         super(file, {
             name: 'remove',
@@ -11,9 +11,10 @@ module.exports = class extends Command {
             cooldown: 5,
             description: `Remove money from someone`,
             enabled: true,
-            ignoredInhibitors: [],
+            ignoredInhibitors: []
         });
     }
+
     /**
      * @param message
      * @param args

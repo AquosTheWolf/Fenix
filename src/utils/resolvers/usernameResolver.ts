@@ -1,37 +1,37 @@
 import { Guild, GuildMember, Message, MessageEmbed, User } from 'discord.js';
+import _ from 'lodash';
 import settings from '../../settings';
-import { DiscordMenu } from './../discord/paginator'
+import { DiscordMenu } from '../discord/paginator';
+import { userResolver } from './userResolver';
 
-const { userResolver } = require('./../resolvers/userResolver');
 const userOrMemberRegex = /^(?:<@!?)?(\d{17,19})>?$/;
-const _ = require('lodash');
 
 export async function usernameResolver(
     message: Message,
     username: string
 ): Promise<User> {
-    if (!username) throw new Error('Username was not provided');
+    if(!username) throw new Error('Username was not provided');
     const regExpEsc = (str: string) =>
         str.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
 
-    if (!message.guild) {
-        return userResolver(username);
+    if(!message.guild) {
+        return userResolver(message.client, username);
     }
     const resUser = await resolveUser(username, message.guild);
-    if (resUser) return resUser;
+    if(resUser) return resUser;
 
     const results = [];
     const reg = new RegExp(regExpEsc(username), 'i');
-    for (const member of message.guild.members.cache.values()) {
-        if (reg.test(member.user.username)) {
+    for(const member of message.guild.members.cache.values()) {
+        if(reg.test(member.user.username)) {
             results.push(member.user);
-        } else if (reg.test(member.nickname!)) {
+        } else if(reg.test(member.nickname!)) {
             results.push(member.user);
         }
     }
 
     let querySearch: any;
-    if (results.length > 0) {
+    if(results.length > 0) {
         const regWord = new RegExp(`\\b${regExpEsc(username)}\\b`, 'i');
         const filtered = results.filter((user) => regWord.test(user.username));
         querySearch = filtered.length > 0 ? filtered : results;
@@ -39,7 +39,7 @@ export async function usernameResolver(
         querySearch = results;
     }
 
-    switch (querySearch.length) {
+    switch(querySearch.length) {
         case 0:
             throw new Error(
                 `Sorry, I could not find any users matching the criteria provided for ${username}. Please make sure you provided a valid username, nickname, mention, or id.`
@@ -58,14 +58,14 @@ export async function usernameResolver(
                 });
 
                 // Now, break the roles up into groups of 10 for pagination.
-                while (children.length > 0) {
+                while(children.length > 0) {
                     _children.push(children.shift());
-                    if (_children.length > 9) {
+                    if(_children.length > 9) {
                         children2.push(_.cloneDeep(_children));
                         _children = [];
                     }
                 }
-                if (_children.length > 0) {
+                if(_children.length > 0) {
                     children2.push(_.cloneDeep(_children));
                 }
 
@@ -77,7 +77,7 @@ export async function usernameResolver(
                             .setAuthor(
                                 `${message.author.tag}`,
                                 `${message.author.displayAvatarURL({
-                                    dynamic: true,
+                                    dynamic: true
                                 })}`
                             )
                             .setTitle('Multiple users found!')
@@ -101,7 +101,7 @@ export async function usernameResolver(
                             fn: (senderMessage: Message) => {
                                 senderMessage.delete();
                                 return resolve(child);
-                            },
+                            }
                         };
                     })
                 );
@@ -110,15 +110,15 @@ export async function usernameResolver(
 }
 
 function resolveUser(query: any, guild: Guild) {
-    if (query instanceof GuildMember) return query.user;
-    if (query instanceof User) return query;
-    if (typeof query === 'string') {
-        if (userOrMemberRegex.test(query)) {
+    if(query instanceof GuildMember) return query.user;
+    if(query instanceof User) return query;
+    if(typeof query === 'string') {
+        if(userOrMemberRegex.test(query)) {
             return guild.client.users
                 .fetch(userOrMemberRegex.exec(query)![1])
                 .catch(() => null);
         }
-        if (/\w{1,32}#\d{4}/.test(query)) {
+        if(/\w{1,32}#\d{4}/.test(query)) {
             const res = guild.members.cache.find(
                 (member: GuildMember) => member.user.tag === query
             );

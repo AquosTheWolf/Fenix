@@ -1,17 +1,17 @@
 // Imports
-import { Client, CommandLoader, EventLoader } from "nukejs";
-import chalk from "chalk";
-import "dotenv/config";
-import enmap from "enmap";
-import mongoose from "mongoose";
-import settings from "./settings";
-import { Client as ClientDB } from "./database/models/ClientsConfig";
-import { MessageEmbed } from "discord.js";
+import chalk from 'chalk';
+import { MessageEmbed } from 'discord.js';
+import 'dotenv/config';
+import enmap from 'enmap';
+import mongoose from 'mongoose';
+import { Client, CommandLoader, EventLoader } from 'nukejs';
+import { Client as ClientDB } from './database/models/ClientsConfig';
+import settings from './settings';
 
 // Structures
-require("./structures/Guild");
-require("./structures/User");
-require("./structures/GuildMember");
+import './structures/Guild';
+import './structures/GuildMember';
+import './structures/User';
 
 // FurDevs Banner
 console.log(String.raw` _____           ____                  `);
@@ -24,64 +24,65 @@ console.log(String.raw`                                       `);
 
 // Initialize the Client with NukeJS
 const client: FurClient = new Client({
-    discordOptions: { disableMentions: "everyone", fetchAllMembers: true },
-    readyMessage: "I have started! {username}",
-    owner: "852070153804972043",
+    discordOptions: { disableMentions: 'everyone', fetchAllMembers: true },
+    readyMessage: 'I have started! {username}',
+    owner: '852070153804972043',
     devIds: [
-        "216037365829992448",
-        "388157815136452609",
-        "562086061153583122",
-        "852070153804972043",
-        "436565164674908170",
-    ],
+        '216037365829992448',
+        '388157815136452609',
+        '562086061153583122',
+        '852070153804972043',
+        '436565164674908170',
+        '811393103881306123'
+    ]
 });
 
 // Command & Event Loader NukeJS
 const commands = new CommandLoader(client, {
     prefix: async (message) => {
-        if (message.guild) {
+        if(message.guild) {
             const gSettings = await message.guild.settings();
-            if (gSettings) {
+            if(gSettings) {
                 return gSettings.prefix;
             } else {
-                return ">";
+                return '>';
             }
         }
-        return ">";
+        return '>';
     },
-    directory: "dist/commands",
+    directory: 'dist/commands'
 });
-const events = new EventLoader(client, { directory: "dist/events" });
+const events = new EventLoader(client, { directory: 'dist/events' });
 
 // Extending Client
-client["fdevsLog"] = `${chalk.cyanBright("[FurDevs - Log]")}`;
-client["fdevsError"] = `${chalk.redBright("[FurDevs - Error]")}`;
-client["bumpEnmap"] = new enmap({ name: "enmap" });
-client["commands"] = commands.Commands;
-client["events"] = events;
+client['fdevsLog'] = `${chalk.cyanBright('[FurDevs - Log]')}`;
+client['fdevsError'] = `${chalk.redBright('[FurDevs - Error]')}`;
+client['bumpEnmap'] = new enmap({ name: 'enmap' });
+client['commands'] = commands.Commands;
+client['events'] = events;
 
 mongoose
     .connect(process.env.DB!, {
         useUnifiedTopology: true,
         useNewUrlParser: true,
-        useCreateIndex: true,
+        useCreateIndex: true
     })
     .then(() => {
         console.log(`${client.fdevsLog} Connected to MongoDB`);
     })
     .catch((err) => {
         console.log(
-            `${client.fdevsError} WHOOPS! We ranned into an Database Error\n\n${err}`
+            `${client.fdevsError} WHOOPS! We ran into an Database Error\n\n${err}`
         );
     });
 
 const init = async () => {
     console.stdlog = console.log.bind(console);
     console.logs = [];
-    console.log = function () {
-        console.logs.push(Array.from(arguments) + "\n");
-        if (console.logs.length > 10) {
-            for (let i = 0; i != 3; i++) {
+    console.log = function() {
+        console.logs.push(Array.from(arguments) + '\n');
+        if(console.logs.length > 10) {
+            for(let i = 0; i != 3; i++) {
                 console.logs.shift();
             }
         }
@@ -91,8 +92,8 @@ const init = async () => {
     // Create Probability array for Coin drop
 
     let probabilityArray = [];
-    for (let key in settings.coinDropProbability) {
-        for (let i = 0; i < settings.coinDropProbability[key]; i++) {
+    for(let key in settings.coinDropProbability) {
+        for(let i = 0; i < settings.coinDropProbability[key]; i++) {
             probabilityArray.push(Number(key));
         }
     }
@@ -103,21 +104,21 @@ const init = async () => {
 
 init();
 
-client.on("ready", async () => {
+client.on('ready', async () => {
     const clientSettings = await ClientDB.findOne({ id: 1 });
-    if (!clientSettings) ClientDB.create({ id: 1 });
+    if(!clientSettings) await ClientDB.create({ id: 1 });
     const embed = new MessageEmbed()
-        .setTitle("Fenix is ready!")
+        .setTitle('Fenix is ready!')
         .setColor(settings.primaryColor)
-        .addField("Version", require("./../package.json").version)
+        .addField('Version', (await import('./../package.json')).version)
         .setThumbnail(
-            "https://cdn.discordapp.com/emojis/758388154465517578.png?v=1"
+            'https://cdn.discordapp.com/emojis/758388154465517578.png?v=1'
         );
-    client.users.cache.get("852070153804972043")?.send(embed);
+    client.users.cache.get('852070153804972043')?.send(embed);
 
     // Sets the Status
     client.user?.setActivity({
         name: `My Fuzzy Friends`,
-        type: "WATCHING",
+        type: 'WATCHING'
     });
 });

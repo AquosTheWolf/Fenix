@@ -9,6 +9,6 @@ export async function guildResolver(
     const guild = snowflakeRegex.test(snowflake)
         ? client.guilds.resolve(snowflake)
         : null;
-    if (guild) return guild;
+    if(guild) return guild;
     throw new Error(`Invalid guild: ${snowflake}`);
 }

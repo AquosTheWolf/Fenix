@@ -8,8 +8,8 @@ export async function emojiResolver(
 ): Promise<Emoji> {
     const emoji = emojiRegex.test(mention)
         ? // @ts-ignore
-          client.emojis.resolve(emojiRegex.exec(mention))
+        client.emojis.resolve(emojiRegex.exec(mention))
         : null;
-    if (emoji) return emoji;
+    if(emoji) return emoji;
     throw new Error(`Invalid Emoji: ${mention}`);
 }

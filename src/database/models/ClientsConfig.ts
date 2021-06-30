@@ -1,15 +1,15 @@
-import mongoose, { model, Schema, Document } from "mongoose";
+import { Document, model, Schema } from 'mongoose';
 
 const ClientSchema: Schema = new Schema({
     whiteListedGuilds: {
         type: Array,
-        default: ["731520035717251142", "849343018939187231"],
+        default: ['731520035717251142', '849343018939187231']
     },
 
     maintenance: {
         type: Boolean,
-        default: false,
-    },
+        default: false
+    }
 });
 
 export interface IClient extends Document {
@@ -17,4 +17,4 @@ export interface IClient extends Document {
     maintenance: boolean;
 }
 
-export const Client = model<IClient>("Client", ClientSchema);
+export const Client = model<IClient>('Client', ClientSchema);

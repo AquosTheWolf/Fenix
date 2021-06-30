@@ -1,58 +1,58 @@
-import mongoose, { Document, model, Schema } from "mongoose";
+import { Document, model, Schema } from 'mongoose';
 
 const GuildSchema: Schema = new Schema({
     guildID: {
         type: String,
         required: true,
-        unique: true,
+        unique: true
     },
 
     prefix: {
         type: String,
         required: true,
-        default: ">",
+        default: '>'
     },
 
     disabledCommands: {
         type: Array,
-        default: [],
+        default: []
     },
 
     bankerRole: {
         type: String,
-        default: null,
+        default: null
     },
 
     bumpingChannel: {
         type: String,
-        default: null,
+        default: null
     },
 
     staffBumpingChannel: {
         type: String,
-        default: null,
+        default: null
     },
 
     staffMembers: {
         type: Array,
-        default: [],
+        default: []
     },
 
     reputationSystem: {
         type: Boolean,
-        default: false,
+        default: false
     },
 
     programmingCategory: {
         type: String,
-        default: null,
+        default: null
     },
 
     communityProjectsCategory: {
         type: String,
-        default: null,
+        default: null
     },
-    
+
     communityProjectsLimit: {
         type: Number,
         default: 3
@@ -76,7 +76,7 @@ export interface IGuild extends Document {
     staffBumpingChannel: string;
     communityProjectsCategory: string;
     communityProjectsLimit: number;
-    communityRequiredRole: string
+    communityRequiredRole: string;
 }
 
-export const Guild = model<IGuild>("Guild", GuildSchema);
+export const Guild = model<IGuild>('Guild', GuildSchema);

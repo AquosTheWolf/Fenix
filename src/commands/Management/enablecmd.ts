@@ -1,31 +1,32 @@
-import { Message, MessageEmbed } from "discord.js";
-import { Command } from "nukejs";
-import { Guild } from "./../../database/models/GuildConfig";
+import { Message, MessageEmbed } from 'discord.js';
+import { Command } from 'nukejs';
+import { Guild } from '../../database/models/GuildConfig';
 
-module.exports = class extends Command {
+export default class extends Command {
     constructor(file: any) {
         super(file, {
-            name: "enablecommand",
-            category: "Management",
-            runIn: ["text"],
-            aliases: ["enablecmd"],
+            name: 'enablecommand',
+            category: 'Management',
+            runIn: ['text'],
+            aliases: ['enablecmd'],
             cooldown: 0,
             description: `Enables an disabled commands`,
             enabled: true,
-            userPerms: ["MANAGE_GUILD"],
-            ignoredInhibitors: [],
+            userPerms: ['MANAGE_GUILD'],
+            ignoredInhibitors: []
         });
     }
+
     /**
      * @param message
      * @param args
      * @param client
      */
     async run(message: Message, args: string[], client: FurClient) {
-        if (!message.guild) return;
-        if (!args[0])
+        if(!message.guild) return;
+        if(!args[0])
             throw new Error(
-                "Please provide a command or alias of what command you would like to disable"
+                'Please provide a command or alias of what command you would like to disable'
             );
         const settings = await message.guild.settings();
         const cmd =
@@ -33,11 +34,11 @@ module.exports = class extends Command {
             client.commands.find((tempCmd) =>
                 tempCmd.aliases.includes(args[0])
             );
-        if (!cmd || typeof cmd === undefined) {
-            throw new Error("This command doesn't exist in the bot");
+        if(!cmd || typeof cmd === undefined) {
+            throw new Error('This command doesn\'t exist in the bot');
         }
-        if (settings.disabledCommands.indexOf(cmd.name) == -1)
-            throw new Error("This Command isn't disabled in the first place");
+        if(settings.disabledCommands.indexOf(cmd.name) == -1)
+            throw new Error('This Command isn\'t disabled in the first place');
         const cmds = settings.disabledCommands;
         cmds.splice(cmds.indexOf(cmd.name), 1);
 
@@ -46,14 +47,14 @@ module.exports = class extends Command {
                 { guildID: message.guild.id },
                 { disabledCommands: cmds }
             );
-        } catch (e) {
+        } catch(e) {
             console.error(
-                `An error occured trying to update the disable commands!\n\n${e}`
+                `An error occurred trying to update the disable commands!\n\n${e}`
             );
-            
+
             throw new Error(
-                `An error occured trying to update the disable commands!\n\n${e}`
-            )
+                `An error occurred trying to update the disable commands!\n\n${e}`
+            );
         }
         const embed = new MessageEmbed()
             .setTitle(`✅ Command: ${cmd.name} been enabled for this guild`)
@@ -65,8 +66,8 @@ module.exports = class extends Command {
             .setDescription(
                 `The Command: ${cmd.name} ${
                     cmd.aliases.length > 0
-                        ? `(Alias: ${cmd.aliases.join(", ")})`
-                        : ""
+                        ? `(Alias: ${cmd.aliases.join(', ')})`
+                        : ''
                 } has been enabled`
             )
             .setTimestamp()

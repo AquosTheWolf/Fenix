@@ -9,7 +9,7 @@ export async function messageResolver(
     const msg = snowflakeRegex.test(snowflake)
         ? await message.channel.messages.fetch(snowflake).catch(() => null)
         : undefined;
-    if (msg) return msg;
+    if(msg) return msg;
 
     throw new Error(
         `Invalid Message: ${snowflake} Remember, the bot can only resolve message in the same channel `
