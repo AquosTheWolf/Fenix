@@ -1,11 +1,12 @@
 import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'nukejs';
+
 import { Guild } from '../../database/models/GuildConfig';
 import settings from '../../settings';
 import { roleNameResolver } from '../../utils/resolvers/roleNameResolver';
 import { usernameResolver } from '../../utils/resolvers/usernameResolver';
 
-export default class extends Command {
+module.exports = class extends Command {
     /**
      * @param {any} file
      */

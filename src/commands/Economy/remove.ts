@@ -1,7 +1,7 @@
 import { Message } from 'discord.js';
 import { Command } from 'nukejs';
 
-export default class extends Command {
+module.exports = class extends Command {
     constructor(file: any) {
         super(file, {
             name: 'remove',

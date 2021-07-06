@@ -1,9 +1,10 @@
 import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'nukejs';
+
 import { Guild as G } from './../../database/models/GuildConfig';
 import botSettings from './../../settings';
 
-export default class extends Command {
+module.exports = class extends Command {
     /**
      * @param {any} file
      */

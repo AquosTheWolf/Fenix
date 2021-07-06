@@ -1,7 +1,7 @@
 import { Message } from 'discord.js';
 import { Event } from 'nukejs';
 
-export default class extends Event {
+module.exports = class extends Event {
     constructor() {
         super({
             name: 'message',

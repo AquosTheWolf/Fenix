@@ -1,8 +1,9 @@
 import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'nukejs';
+
 import settings from '../../settings';
 
-export default class extends Command {
+module.exports = class extends Command {
     constructor(file: any) {
         super(file, {
             name: 'bank',
