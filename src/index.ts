@@ -57,7 +57,7 @@ const events = new EventLoader(client, { directory: 'dist/events' });
 // Extending Client
 client['fdevsLog'] = `${chalk.cyanBright('[FurDevs - Log]')}`;
 client['fdevsError'] = `${chalk.redBright('[FurDevs - Error]')}`;
-client['bumpEnmap'] = new enmap({ name: 'enmap' });
+// client['bumpEnmap'] = new enmap({ name: 'enmap' });
 client['commands'] = commands.Commands;
 client['events'] = events;
 
@@ -110,7 +110,7 @@ client.on('ready', async () => {
     const embed = new MessageEmbed()
         .setTitle('Fenix is ready!')
         .setColor(settings.primaryColor)
-        .addField('Version', (await import('./../package.json')).version)
+        .addField('Version', (await require('./../package.json')).version)
         .setThumbnail(
             'https://cdn.discordapp.com/emojis/758388154465517578.png?v=1'
         );
@@ -122,3 +122,8 @@ client.on('ready', async () => {
         type: 'WATCHING'
     });
 });
+
+
+process.on('unhandledRejection', (e: string) =>
+    console.error('unhandledErrorRejection!\n' + e)
+);

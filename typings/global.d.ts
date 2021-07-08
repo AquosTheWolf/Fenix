@@ -1,5 +1,4 @@
 import discord, { Collection } from 'discord.js'
-import Enmap from 'enmap';
 import nukejs, { Command, CommandLoader, EventLoader } from 'nukejs'
 
 declare global {
@@ -7,7 +6,6 @@ declare global {
     fdevsLog?: string;
     fdevsError?: string;
     fwebsLog?: string;
-    bumpEnmap?: Enmap;
     coinDropArray?: number[];
     commands?: Collection<string, Command>
     events?: EventLoader;
