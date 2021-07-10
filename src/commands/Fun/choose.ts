@@ -2,9 +2,6 @@ import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'nukejs';
 import settings from '../../settings';
 module.exports = class extends Command {
-    /**
-     * @param {any} file
-     */
     constructor(file: any) {
         super(file, {
             name: 'choose',
@@ -18,11 +15,6 @@ module.exports = class extends Command {
         });
     }
 
-    /**
-     * @param {Message} message
-     * @param {string[]} args
-     * @param {HozolClient} client
-     */
     async run(message: Message, args: string[], client: FurClient) {
         message.delete().then(() => {});
         if (!args)
@@ -35,6 +27,7 @@ module.exports = class extends Command {
                 'You must provide more than 1 options seperated with an " or "'
             );
         const embed = new MessageEmbed()
+            .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
             .setTitle('🧐 Choices')
             .setDescription(
                 `Out of the ${options.length} choices, I choose ${
