@@ -1,6 +1,7 @@
 // Imports
 import { MessageEmbed } from 'discord.js';
 import 'dotenv/config';
+import { api } from './api';
 import { Client as ClientDB } from './database/models/ClientsConfig';
 import { FurClient } from './lib/FurClient';
 import settings from './settings';
@@ -66,6 +67,7 @@ client.on('ready', async () => {
         name: `My Fuzzy Friends`,
         type: 'WATCHING'
     });
+    api(client)
 });
 
 

@@ -33,15 +33,8 @@
 - userinfo
 
 ## Management
-- addProgrammingChannel
-- addStaffMembers
 - announce
-- bankerRole
 - dbump
-- prefix
-- removeStaffMembers
-- setBumpingChannel
-- settings
 
 
 ## Repuation

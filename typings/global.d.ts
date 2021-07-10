@@ -11,6 +11,12 @@ declare global {
     events?: EventLoader;
   }
 
+  namespace Express{
+    export interface Request{
+      client: FurClient
+    }
+  }
+
   export interface Console {
     logs: any[];
     stdlog: { (...data: any[]): void; (message?: any, ...optionalParams: any[]): void; };
