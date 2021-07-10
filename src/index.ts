@@ -1,11 +1,8 @@
 // Imports
-import chalk from 'chalk';
 import { MessageEmbed } from 'discord.js';
 import 'dotenv/config';
-import enmap from 'enmap';
-import mongoose from 'mongoose';
-import { Client, CommandLoader, EventLoader } from 'nukejs';
 import { Client as ClientDB } from './database/models/ClientsConfig';
+import { FurClient } from './lib/FurClient';
 import settings from './settings';
 
 // Structures
@@ -23,58 +20,15 @@ console.log(String.raw`_______________________________________`);
 console.log(String.raw`                                       `);
 
 // Initialize the Client with NukeJS
-const client: FurClient = new Client({
+const client = new FurClient({
     discordOptions: { disableMentions: 'everyone', fetchAllMembers: true },
     readyMessage: 'I have started! {username}',
-    owner: '852070153804972043',
-    devIds: [
-        '216037365829992448',
-        '388157815136452609',
-        '562086061153583122',
-        '852070153804972043',
-        '436565164674908170',
-        '811393103881306123'
-    ]
+    owner: settings.owner,
+    devIds: settings.devs
 });
 
-// Command & Event Loader NukeJS
-const commands = new CommandLoader(client, {
-    prefix: async (message) => {
-        if(message.guild) {
-            const gSettings = await message.guild.settings();
-            if(gSettings) {
-                return gSettings.prefix;
-            } else {
-                return '>';
-            }
-        }
-        return '>';
-    },
-    directory: 'dist/commands'
-});
-const events = new EventLoader(client, { directory: 'dist/events' });
 
-// Extending Client
-client['fdevsLog'] = `${chalk.cyanBright('[FurDevs - Log]')}`;
-client['fdevsError'] = `${chalk.redBright('[FurDevs - Error]')}`;
-// client['bumpEnmap'] = new enmap({ name: 'enmap' });
-client['commands'] = commands.Commands;
-client['events'] = events;
 
-mongoose
-    .connect(process.env.DB!, {
-        useUnifiedTopology: true,
-        useNewUrlParser: true,
-        useCreateIndex: true
-    })
-    .then(() => {
-        console.log(`${client.fdevsLog} Connected to MongoDB`);
-    })
-    .catch((err) => {
-        console.log(
-            `${client.fdevsError} WHOOPS! We ran into an Database Error\n\n${err}`
-        );
-    });
 
 const init = async () => {
     console.stdlog = console.log.bind(console);
@@ -88,16 +42,6 @@ const init = async () => {
         }
         console.stdlog.apply(console, arguments);
     };
-
-    // Create Probability array for Coin drop
-
-    let probabilityArray = [];
-    for(let key in settings.coinDropProbability) {
-        for(let i = 0; i < settings.coinDropProbability[key]; i++) {
-            probabilityArray.push(Number(key));
-        }
-    }
-    client.coinDropArray = probabilityArray;
 
     client.login(process.env.TOKEN);
 };
