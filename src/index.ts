@@ -49,6 +49,7 @@ const init = async () => {
 init();
 
 client.on('ready', async () => {
+    client.connectDB()
     const clientSettings = await ClientDB.findOne({ id: 1 });
     if(!clientSettings) await ClientDB.create({ id: 1 });
     const embed = new MessageEmbed()
@@ -69,5 +70,5 @@ client.on('ready', async () => {
 
 
 process.on('unhandledRejection', (e: string) =>
-    console.error('unhandledErrorRejection!\n' + e)
+    client.error('unhandledErrorRejection!\n' + e)
 );

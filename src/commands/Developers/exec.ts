@@ -1,0 +1,114 @@
+// This command is adapted from https://github.com/VulpoTheDev/Hozol
+import { Message, MessageEmbed } from 'discord.js';
+import { Command } from 'nukejs';
+import { exec } from 'child_process';
+import settings from '../../settings';
+import { generateHastebin } from '../../utils/general/hasteful';
+
+module.exports = class extends Command {
+    constructor(file: any) {
+        super(file, {
+            name: 'exec',
+            category: 'Developers',
+            runIn: ['text'],
+            aliases: ['execute', 'ex'],
+            botPerms: ['EMBED_LINKS'],
+            restricted: 'dev',
+            description: 'Execute things in the terminal!',
+            enabled: true,
+        });
+    }
+
+    async run(message: Message, args: string[], client) {
+        await message.delete();
+        const script = args.join(' ');
+
+        // If there's no string; Throw an error asking to provide a command to execute
+        if (!script) {
+            throw new Error('Please provide a command for me to execute');
+        }
+
+        // Disallow certain scripts to be ran
+        if (
+            script.toLowerCase().includes('/.|.&/') ||
+            script.toLowerCase().includes('mkdir') ||
+            script.toLowerCase().includes('restart') ||
+            script.toLowerCase().includes('reboot') ||
+            script.toLowerCase().includes('shutdown') ||
+            script.toLowerCase().includes('rm')
+        ) {
+            throw new Error(
+                'mkdir, restart, reboot, shutdown, rm, and dot based directory structures are not permitted.'
+            );
+        }
+
+        // Execute the command
+
+        exec(`${script}`, async (error, stdout) => {
+            const response = error || stdout;
+            if (
+                response.toString().length > 1024 ||
+                response.toString().length > 1024
+            ) {
+                // If the response is length (more than 1024 characters) the generate/send a hastebin link
+                try {
+                    generateHastebin(response.toString()).then((response) => {
+                        const embed = new MessageEmbed()
+                            .setAuthor(
+                                `${message.author.tag}`,
+                                `${message.author.displayAvatarURL({
+                                    dynamic: true,
+                                })}`
+                            )
+                            .setTitle('Execute')
+                            .setDescription(
+                                `**Ran: ${script}**\n\n[\`${response}\`](${response})`
+                            )
+                            .setThumbnail(
+                                client.user?.displayAvatarURL({
+                                    dynamic: true,
+                                }) ||
+                                'https://avatars.githubusercontent.com/u/40704274?s=460&u=1ef220ad5b4625d67046cb5ec9c080299dc1aa61&v=4'
+                            )
+                            .setTimestamp()
+                            .setFooter(`User ID: ${message.author.id}`)
+                            .setColor(settings.primaryColor);
+                        // Sends the embed with the hastebin link
+                        message.channel.send({
+                            embed,
+                        });
+                    });
+                } catch (e) {
+                    throw new Error(e);
+                }
+            } else {
+                try {
+                    const embed = new MessageEmbed()
+                        .setAuthor(
+                            `${message.author.tag}`,
+                            `${message.author.displayAvatarURL({
+                                dynamic: true,
+                            })}`
+                        )
+                        .setTitle('Execute')
+                        .setDescription(
+                            `**Ran: ${script}**\n\`\`\`js\n${response.toString()} \n\`\`\``
+                        )
+                        .setThumbnail(
+                            client.user?.displayAvatarURL({
+                                dynamic: true,
+                            }) ||
+                            'https://avatars.githubusercontent.com/u/40704274?s=460&u=1ef220ad5b4625d67046cb5ec9c080299dc1aa61&v=4'
+                        )
+                        .setTimestamp()
+                        .setFooter(`User ID: ${message.author.id}`)
+                        .setColor(settings.primaryColor);
+                    // Sends the embed with the response embed in it... Get it?
+                    await message.channel.send(embed);
+                } catch (e) {
+                    throw new Error(e);
+                }
+            }
+        });
+    }
+};

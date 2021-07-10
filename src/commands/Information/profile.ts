@@ -25,15 +25,16 @@ module.exports = class extends Command {
      */
     async run(message: Message, args: string[], client: FurClient) {
         await message.delete();
-        const target = await message.guild.members.cache.get((await usernameResolver(message, args[0])).id) || message.member;
+        const target = args[0] ? await message.guild.members.cache.get((await usernameResolver(message, args[0])).id) : message.member;
         const profile = await target.settings();
         const embed = new MessageEmbed()
-            .setAuthor(message.author.id, message.author.displayAvatarURL({ dynamic: true }))
+            .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
             .setTitle('Profile')
-            .addField(`Coins`, profile.coins)
-            .addField(`Reps`, profile.reps)
-            .addField(`XP`, profile.xp)
+            .addField(`Coins`, profile.coins, true)
+            .addField(`Reps`, profile.reps, true)
+            .addField(`XP`, profile.xp, true)
             .setColor(settings.primaryColor)
+            .setThumbnail(target.user.displayAvatarURL({ dynamic: true }))
             .setTimestamp()
             .setFooter(`User ID: ${message.author.id}`);
 
