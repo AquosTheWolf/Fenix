@@ -1,7 +1,8 @@
 import { Router } from 'express';
-import FDevsRouter from './fdevs'
-const router = Router()
+import FDevsRouter from './fdevs';
 
-router.use('/fdevs', FDevsRouter)
+const router = Router();
+
+router.use('/fdevs', FDevsRouter);
 
 export default router;

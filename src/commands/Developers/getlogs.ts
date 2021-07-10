@@ -12,22 +12,22 @@ module.exports = class extends Command {
             botPerms: ['EMBED_LINKS'],
             restricted: 'dev',
             description: 'Output the console log!',
-            enabled: true,
+            enabled: true
         });
     }
 
     async run(message: Message, args: string[], client) {
-        await message.delete()
+        await message.delete();
 
-        var str = ""
-        for (let log in console.logs) {
-            str += console.logs[log]
+        var str = '';
+        for(let log in console.logs) {
+            str += console.logs[log];
         }
-        var messagesToPrint = str.match(/.{1,1994}/g)
-        var messages = ""
-        for (let index in messagesToPrint) {
-                messages += `\`${messagesToPrint[index]}\`\n`
+        var messagesToPrint = str.match(/.{1,1994}/g);
+        var messages = '';
+        for(let index in messagesToPrint) {
+            messages += `\`${messagesToPrint[index]}\`\n`;
         }
-        await message.channel.send(messages)
+        await message.channel.send(messages);
     }
 };

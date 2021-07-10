@@ -29,8 +29,6 @@ const client = new FurClient({
 });
 
 
-
-
 const init = async () => {
     console.stdlog = console.log.bind(console);
     console.logs = [];
@@ -50,7 +48,7 @@ const init = async () => {
 init();
 
 client.on('ready', async () => {
-    client.connectDB()
+    client.connectDB();
     const clientSettings = await ClientDB.findOne({ id: 1 });
     if(!clientSettings) await ClientDB.create({ id: 1 });
     const embed = new MessageEmbed()
@@ -67,7 +65,7 @@ client.on('ready', async () => {
         name: `My Fuzzy Friends`,
         type: 'WATCHING'
     });
-    api(client)
+    api(client);
 });
 
 

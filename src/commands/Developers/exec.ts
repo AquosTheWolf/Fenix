@@ -1,7 +1,7 @@
 // This command is adapted from https://github.com/VulpoTheDev/Hozol
+import { exec } from 'child_process';
 import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'nukejs';
-import { exec } from 'child_process';
 import settings from '../../settings';
 import { generateHastebin } from '../../utils/general/hasteful';
 
@@ -15,7 +15,7 @@ module.exports = class extends Command {
             botPerms: ['EMBED_LINKS'],
             restricted: 'dev',
             description: 'Execute things in the terminal!',
-            enabled: true,
+            enabled: true
         });
     }
 
@@ -24,12 +24,12 @@ module.exports = class extends Command {
         const script = args.join(' ');
 
         // If there's no string; Throw an error asking to provide a command to execute
-        if (!script) {
+        if(!script) {
             throw new Error('Please provide a command for me to execute');
         }
 
         // Disallow certain scripts to be ran
-        if (
+        if(
             script.toLowerCase().includes('/.|.&/') ||
             script.toLowerCase().includes('mkdir') ||
             script.toLowerCase().includes('restart') ||
@@ -46,7 +46,7 @@ module.exports = class extends Command {
 
         exec(`${script}`, async (error, stdout) => {
             const response = error || stdout;
-            if (
+            if(
                 response.toString().length > 1024 ||
                 response.toString().length > 1024
             ) {
@@ -57,7 +57,7 @@ module.exports = class extends Command {
                             .setAuthor(
                                 `${message.author.tag}`,
                                 `${message.author.displayAvatarURL({
-                                    dynamic: true,
+                                    dynamic: true
                                 })}`
                             )
                             .setTitle('Execute')
@@ -66,7 +66,7 @@ module.exports = class extends Command {
                             )
                             .setThumbnail(
                                 client.user?.displayAvatarURL({
-                                    dynamic: true,
+                                    dynamic: true
                                 }) ||
                                 'https://avatars.githubusercontent.com/u/40704274?s=460&u=1ef220ad5b4625d67046cb5ec9c080299dc1aa61&v=4'
                             )
@@ -75,10 +75,10 @@ module.exports = class extends Command {
                             .setColor(settings.primaryColor);
                         // Sends the embed with the hastebin link
                         message.channel.send({
-                            embed,
+                            embed
                         });
                     });
-                } catch (e) {
+                } catch(e) {
                     throw new Error(e);
                 }
             } else {
@@ -87,7 +87,7 @@ module.exports = class extends Command {
                         .setAuthor(
                             `${message.author.tag}`,
                             `${message.author.displayAvatarURL({
-                                dynamic: true,
+                                dynamic: true
                             })}`
                         )
                         .setTitle('Execute')
@@ -96,7 +96,7 @@ module.exports = class extends Command {
                         )
                         .setThumbnail(
                             client.user?.displayAvatarURL({
-                                dynamic: true,
+                                dynamic: true
                             }) ||
                             'https://avatars.githubusercontent.com/u/40704274?s=460&u=1ef220ad5b4625d67046cb5ec9c080299dc1aa61&v=4'
                         )
@@ -105,7 +105,7 @@ module.exports = class extends Command {
                         .setColor(settings.primaryColor);
                     // Sends the embed with the response embed in it... Get it?
                     await message.channel.send(embed);
-                } catch (e) {
+                } catch(e) {
                     throw new Error(e);
                 }
             }

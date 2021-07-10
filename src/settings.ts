@@ -6,10 +6,10 @@ const settings = {
     'welcomeChannel': '731523552636829697',
     'verificationLogs': '742414095957098631',
     'primaryColor': '#2CA0D3',
-    'APIPort': 3909,
+    'APIPort': 8080,
     'currency': 'Fur',
     'coinDropProbability': { '10': 2, '9': 4, '8': 5, '7': 7, '6': 9, '5': 11, '4': 13, '3': 15, '2': 16, '1': 18 },
-    'prefix': ">",
+    'prefix': '>',
     'devs': [
         '216037365829992448',
         '388157815136452609',
@@ -20,5 +20,5 @@ const settings = {
     ],
     'owner': '852070153804972043'
 };
-export const __prod__ = process.env.NODE_ENV === 'production'
+export const __prod__ = process.env.NODE_ENV === 'production';
 export default settings;

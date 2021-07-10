@@ -1,6 +1,6 @@
 import { Message, MessageEmbed } from 'discord.js';
-import { Command } from 'nukejs';
 import fetch from 'node-fetch';
+import { Command } from 'nukejs';
 import settings from './../../settings';
 
 module.exports = class extends Command {
@@ -13,14 +13,15 @@ module.exports = class extends Command {
             botPerms: ['EMBED_LINKS', 'SEND_MESSAGES'],
             description: 'Ask for advices from the bot',
             enabled: true,
-            usage: '',
+            usage: ''
         });
     }
 
     async run(message: Message, args: string[], client: FurClient) {
-        message.delete().catch(() => {});
+        message.delete().catch(() => {
+        });
         const quoteJSON = await fetch('https://api.adviceslip.com/advice', {
-            method: 'GET',
+            method: 'GET'
         }).then((res) => res.json());
         const quote = quoteJSON.slip.advice;
         const embed = new MessageEmbed()

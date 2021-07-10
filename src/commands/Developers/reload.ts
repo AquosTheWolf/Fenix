@@ -13,7 +13,7 @@ module.exports = class extends Command {
             botPerms: ['EMBED_LINKS'],
             restricted: 'dev',
             description: 'Restarts Fenix!',
-            enabled: true,
+            enabled: true
         });
     }
 
@@ -37,9 +37,9 @@ module.exports = class extends Command {
                 // Executes this command then reload the commands
                 await process.exit();
                 embed.setTitle('The bot has been reloaded.');
-                embed.setDescription("The bot's commands has been reloaded!");
+                embed.setDescription('The bot\'s commands has been reloaded!');
                 await msg.edit(embed);
-            } catch (err) {
+            } catch(err) {
                 // ERROR!? Throw it
                 throw new Error(err);
             }

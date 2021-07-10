@@ -1,7 +1,7 @@
 // This command is adapted from https://github.com/VulpoTheDev/Hozol
+import beautify from 'beautify';
 import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'nukejs';
-import beautify from 'beautify';
 import settings from '../../settings';
 import { generateHastebin } from '../../utils/general/hasteful';
 
@@ -14,23 +14,23 @@ module.exports = class extends Command {
             aliases: ['evaluate', 'e'],
             restricted: 'dev',
             description: 'Evaluate JS Code, Be careful with it!',
-            enabled: true,
+            enabled: true
         });
     }
 
     async run(message: Message, args: string[], client) {
         await message.delete();
-        if (!args[0]) throw new Error('Please Provide JS Code you would like to Evaluate');
+        if(!args[0]) throw new Error('Please Provide JS Code you would like to Evaluate');
 
         const script = args.join(' ');
-        if (script.includes('token')) throw new Error('Sorry, viewing the token is off limits')
+        if(script.includes('token')) throw new Error('Sorry, viewing the token is off limits');
 
         try {
             const evaluated = eval(script);
             const evaled = require('util').inspect(evaluated, { depth: 5 });
             const promisedEval: any = await Promise.resolve(evaluated);
             let res = evaled.toString().length >= 1024 ? await generateHastebin(evaled) : evaled;
-            let promisedResult = promisedEval.toString().length >= 1024 ? await generateHastebin(promisedEval) : promisedEval
+            let promisedResult = promisedEval.toString().length >= 1024 ? await generateHastebin(promisedEval) : promisedEval;
 
             // Process the output
             const embed = new MessageEmbed()
@@ -46,7 +46,7 @@ module.exports = class extends Command {
                 .setThumbnail(client.user?.displayAvatarURL({ dynamic: true }));
 
             // If what is provided a promise then, provide the resolved promise (or link) in the embed
-            if (evaluated && evaluated.then) {
+            if(evaluated && evaluated.then) {
                 embed.addField(':outbox_tray: Promise Output', `\`\`\`js\n${promisedResult}\`\`\``);
             }
 
@@ -55,7 +55,7 @@ module.exports = class extends Command {
 
             // Sends the embed
             await message.channel.send(embed);
-        } catch (err) {
+        } catch(err) {
             // If any errors occurred... then, send the error instead
             throw new Error(err);
         }

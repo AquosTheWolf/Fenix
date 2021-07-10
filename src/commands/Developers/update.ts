@@ -1,9 +1,9 @@
 // This command is adapted from https://github.com/VulpoTheDev/Hozol
+import { execSync as exec } from 'child_process';
 import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'nukejs';
 import settings from '../../settings';
 import { generateHastebin } from '../../utils/general/hasteful';
-import { execSync as exec } from 'child_process';
 
 module.exports = class extends Command {
     constructor(file: any) {
@@ -15,7 +15,7 @@ module.exports = class extends Command {
             botPerms: ['EMBED_LINKS'],
             restricted: 'dev',
             description: 'Updates Fenix!',
-            enabled: true,
+            enabled: true
         });
     }
 
@@ -42,7 +42,7 @@ module.exports = class extends Command {
             await exec('git stash').toString();
             let gitPull = await exec('git pull origin master').toString();
             let npmInstall = await exec('yarn').toString();
-            if (gitPull.length > 1024 || npmInstall.length > 1024) {
+            if(gitPull.length > 1024 || npmInstall.length > 1024) {
                 npmInstall = await generateHastebin(npmInstall) as string;
                 gitPull = await generateHastebin(gitPull) as string;
             }
@@ -59,14 +59,14 @@ module.exports = class extends Command {
                 .setTimestamp()
                 .setFooter(`User ID: ${message.author.id}`);
             await msg.edit(complete);
-        } catch (e) {
+        } catch(e) {
             const error = new MessageEmbed()
                 .setAuthor(
                     `${message.author.tag}`,
                     `${message.author.displayAvatarURL({ dynamic: true })}`
                 )
                 .setColor(settings.primaryColor)
-                .setTitle("ERROR! - Bot didn't update!")
+                .setTitle('ERROR! - Bot didn\'t update!')
                 .setDescription(
                     `Please pray the lords and hope that the update didn't mess up the prod files.(Please ssh into the server and resolve the errors) \n \`\`\`${e}\`\`\``
                 )

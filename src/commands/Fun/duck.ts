@@ -1,6 +1,6 @@
 import { Message, MessageEmbed } from 'discord.js';
-import { Command } from 'nukejs';
 import fetch from 'node-fetch';
+import { Command } from 'nukejs';
 import settings from '../../settings';
 
 module.exports = class extends Command {
@@ -13,20 +13,20 @@ module.exports = class extends Command {
             botPerms: ['SEND_MESSAGES', 'EMBED_LINKS'],
             description: 'Send a random duck image',
             enabled: true,
-            usage: '',
+            usage: ''
         });
     }
 
     async run(message: Message, args: string[], client: FurClient) {
         await message.delete();
-        const { url } = await fetch("https://random-d.uk/api/v2/random").then((response) => response.json());
+        const { url } = await fetch('https://random-d.uk/api/v2/random').then((response) => response.json());
         const embed = new MessageEmbed()
             .setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL({ dynamic: true })}`)
-            .setTitle("🦆 Quack Quack!")
+            .setTitle('🦆 Quack Quack!')
             .setImage(url)
             .setColor(settings.primaryColor)
             .setTimestamp()
-            .setFooter(`User ID: ${message.author.id}`)
-        message.channel.send(embed)
+            .setFooter(`User ID: ${message.author.id}`);
+        message.channel.send(embed);
     }
 };

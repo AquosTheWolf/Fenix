@@ -1,7 +1,8 @@
 import { Message, MessageEmbed } from 'discord.js';
-import { Command } from 'nukejs';
 import fetch from 'node-fetch';
+import { Command } from 'nukejs';
 import settings from '../../settings';
+
 module.exports = class extends Command {
     constructor(file: any) {
         super(file, {
@@ -12,12 +13,13 @@ module.exports = class extends Command {
             botPerms: ['SEND_MESSAGES', 'EMBED_LINKS'],
             description: 'Send a Random cat',
             enabled: true,
-            usage: '',
+            usage: ''
         });
     }
 
     async run(message: Message, args: string[], client: FurClient) {
-        message.delete().catch(() => {});
+        message.delete().catch(() => {
+        });
         try {
             const catImageJSON = await fetch(
                 'https://aws.random.cat/meow'
@@ -31,7 +33,7 @@ module.exports = class extends Command {
                 .setTimestamp()
                 .setFooter(`User ID: ${message.author.id}`);
             await message.channel.send(embed);
-        } catch (e) {
+        } catch(e) {
             throw new Error(
                 'There was an issue getting a random cat image... sorry'
             );

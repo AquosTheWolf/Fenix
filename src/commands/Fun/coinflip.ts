@@ -1,6 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'nukejs';
 import settings from '../../settings';
+
 module.exports = class extends Command {
     /**
      * @param {any} file
@@ -14,12 +15,13 @@ module.exports = class extends Command {
             botPerms: ['SEND_MESSAGES', 'EMBED_LINKS'],
             description: 'Flip a Coin',
             enabled: true,
-            usage: '[bets]',
+            usage: '[bets]'
         });
     }
 
     async run(message: Message, args: string[], client: FurClient) {
-        message.delete().then(() => {});
+        message.delete().then(() => {
+        });
         const coin = ['Head', 'Tails'];
         const bets = coin.includes(args[0]) ? args[0] : null;
         const flip = coin[Math.floor(Math.random() * coin.length)];
@@ -30,10 +32,10 @@ module.exports = class extends Command {
                 `*flips a coin* The coin says ${flip}! ${
                     bets
                         ? `You also made a bet and ${
-                              bets === flip
-                                  ? 'You Won the bet!'
-                                  : 'You Lost the bet!'
-                          }`
+                            bets === flip
+                                ? 'You Won the bet!'
+                                : 'You Lost the bet!'
+                        }`
                         : ''
                 }`
             )
