@@ -18,11 +18,6 @@ module.exports = class extends Command {
         });
     }
 
-    /**
-     * @param message
-     * @param args
-     * @param client
-     */
     async run(message: Message, args: string[], client: FurClient) {
         await message.delete();
         const target = args[0] ? await message.guild.members.cache.get((await usernameResolver(message, args[0])).id) : message.member;

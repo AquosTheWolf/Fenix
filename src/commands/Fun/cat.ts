@@ -3,9 +3,6 @@ import { Command } from 'nukejs';
 import fetch from 'node-fetch';
 import settings from '../../settings';
 module.exports = class extends Command {
-    /**
-     * @param {any} file
-     */
     constructor(file: any) {
         super(file, {
             name: 'cat',
@@ -19,11 +16,6 @@ module.exports = class extends Command {
         });
     }
 
-    /**
-     * @param {Message} message
-     * @param {string[]} args
-     * @param {HozolClient} client
-     */
     async run(message: Message, args: string[], client: FurClient) {
         message.delete().catch(() => {});
         try {
@@ -32,8 +24,8 @@ module.exports = class extends Command {
             ).then((res) => res.json());
             const catImageURL = catImageJSON.file;
             const embed = new MessageEmbed()
-                .setTitle('Random Cat!')
-                .setDescription('Meow')
+                .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
+                .setTitle('🐱 Random Cat!')
                 .setImage(catImageURL)
                 .setColor(settings.primaryColor)
                 .setTimestamp()

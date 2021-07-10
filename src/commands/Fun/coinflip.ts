@@ -18,17 +18,13 @@ module.exports = class extends Command {
         });
     }
 
-    /**
-     * @param {Message} message
-     * @param {string[]} args
-     * @param {HozolClient} client
-     */
     async run(message: Message, args: string[], client: FurClient) {
         message.delete().then(() => {});
         const coin = ['Head', 'Tails'];
         const bets = coin.includes(args[0]) ? args[0] : null;
         const flip = coin[Math.floor(Math.random() * coin.length)];
         const embed = new MessageEmbed()
+            .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
             .setTitle('🪙 Coin Flip')
             .setDescription(
                 `*flips a coin* The coin says ${flip}! ${

@@ -17,11 +17,6 @@ module.exports = class extends Command {
         });
     }
 
-    /**
-     * @param message
-     * @param args
-     * @param client
-     */
     async run(message: Message, args: string[], client: FurClient) {
         await message.delete();
 

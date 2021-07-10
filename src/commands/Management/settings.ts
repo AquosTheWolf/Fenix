@@ -7,9 +7,6 @@ import { roleNameResolver } from '../../utils/resolvers/roleNameResolver';
 import { usernameResolver } from '../../utils/resolvers/usernameResolver';
 
 module.exports = class extends Command {
-    /**
-     * @param {any} file
-     */
     constructor(file: any) {
         super(file, {
             name: 'settings',
@@ -25,11 +22,6 @@ module.exports = class extends Command {
         });
     }
 
-    /**
-     * @param {Message} message
-     * @param {string[]} args
-     * @param {Client} client
-     */
     async run(message: Message, args: string[], client: FurClient) {
         if(!message.guild) return;
         // Delete the original command message

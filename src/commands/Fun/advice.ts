@@ -4,9 +4,6 @@ import fetch from 'node-fetch';
 import settings from './../../settings';
 
 module.exports = class extends Command {
-    /**
-     * @param {any} file
-     */
     constructor(file: any) {
         super(file, {
             name: 'advice',
@@ -20,11 +17,6 @@ module.exports = class extends Command {
         });
     }
 
-    /**
-     * @param {Message} message
-     * @param {string[]} args
-     * @param {HozolClient} client
-     */
     async run(message: Message, args: string[], client: FurClient) {
         message.delete().catch(() => {});
         const quoteJSON = await fetch('https://api.adviceslip.com/advice', {
@@ -32,6 +24,7 @@ module.exports = class extends Command {
         }).then((res) => res.json());
         const quote = quoteJSON.slip.advice;
         const embed = new MessageEmbed()
+            .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
             .setTitle('📖 Advice')
             .setDescription(quote)
             .setTimestamp()

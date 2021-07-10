@@ -5,9 +5,6 @@ import { Guild as G } from './../../database/models/GuildConfig';
 import botSettings from './../../settings';
 
 module.exports = class extends Command {
-    /**
-     * @param {any} file
-     */
     constructor(file: any) {
         super(file, {
             name: 'prefix',
@@ -26,11 +23,6 @@ module.exports = class extends Command {
         });
     }
 
-    /**
-     * @param {Message} message
-     * @param {string[]} args
-     * @param {FurClient} client
-     */
     async run(message: Message, args: string[], client: FurClient) {
         if(!message.guild) return;
         await message.delete();
