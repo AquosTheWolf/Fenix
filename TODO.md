@@ -43,13 +43,6 @@
 - setBumpingChannel
 - settings
 
-## Owner
-- eval
-- exec 
-- getogs
-- kill
-- reload
-- update
 
 ## Repuation
 - addrep

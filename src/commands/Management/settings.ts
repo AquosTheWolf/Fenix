@@ -18,7 +18,7 @@ module.exports = class extends Command {
             cooldown: 0,
             description: 'View/Modify the guilds settings',
             enabled: true,
-            usage: '<Logging|Guild>'
+            usage: '<Staff|Guild> [settings] [additional Parameters]'
         });
     }
 
@@ -328,6 +328,8 @@ module.exports = class extends Command {
                     }
                     break;
             }
+        }else{
+            throw new Error(`You must provide a few arguements\n\n\`Example: //settings ${this.usage}\``)
         }
     }
 };

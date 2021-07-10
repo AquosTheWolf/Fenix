@@ -30,7 +30,7 @@ module.exports = class extends Command {
                 .setColor(settings.primaryColor)
                 .setTimestamp()
                 .setFooter(`User ID: ${message.author.id}`);
-            message.channel.send(embed);
+            await message.channel.send(embed);
         } catch (e) {
             throw new Error(
                 'There was an issue getting a random cat image... sorry'
