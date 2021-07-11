@@ -10,7 +10,6 @@ export const api = (client) => {
         credentials: true
     }));
     app.use((req, res, next) => {
-        // TODO: Make this check the bot api key to avoid abuse
         req.client = client;
         next();
     });

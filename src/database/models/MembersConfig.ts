@@ -31,9 +31,9 @@ const MembersSchema: Schema = new Schema({
         default: 0
     },
 
-    communityChannelCounts: {
-        type: Number,
-        default: 0
+    communityChannels: {
+        type: Array,
+        default: []
     }
 });
 
@@ -44,7 +44,7 @@ export interface IMember extends Document {
     coins: number;
     reps: number;
     xp: number;
-    communityChannelCounts: number;
+    communityChannels: string[];
 }
 
 export const Member = model<IMember>('Member', MembersSchema);

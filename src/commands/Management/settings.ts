@@ -1,8 +1,9 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed, TextChannel } from 'discord.js';
 import { Command } from 'nukejs';
 
 import { Guild } from '../../database/models/GuildConfig';
 import settings from '../../settings';
+import { channelResolver } from '../../utils/resolvers/channelResolver';
 import { roleNameResolver } from '../../utils/resolvers/roleNameResolver';
 import { usernameResolver } from '../../utils/resolvers/usernameResolver';
 
@@ -18,24 +19,24 @@ module.exports = class extends Command {
             cooldown: 0,
             description: 'View/Modify the guilds settings',
             enabled: true,
-            usage: '<Staff|Guild> [settings] [additional Parameters]'
+            usage: '<Staff|Guild> [settings] [additional Parameters]',
         });
     }
 
     async run(message: Message, args: string[], client: FurClient) {
-        if(!message.guild) return;
+        if (!message.guild) return;
         // Delete the original command message
         await message.delete();
-        if(args[0]) {
+        if (args[0]) {
             const gSettings = await message.guild.settings();
-            switch(args[0]) {
+            switch (args[0]) {
                 case 'staff':
-                    if(!args[1]) {
+                    if (!args[1]) {
                         const staffTeam = new MessageEmbed()
                             .setAuthor(
                                 `${message.author.tag}`,
                                 `${message.author.displayAvatarURL({
-                                    dynamic: true
+                                    dynamic: true,
                                 })}`
                             )
                             .setTitle('Staff Settings')
@@ -44,28 +45,28 @@ module.exports = class extends Command {
                                 `Staff Team`,
                                 gSettings.staffMembers.length > 0
                                     ? gSettings.staffMembers
-                                        .map(
-                                            (staff) =>
-                                                message.guild.members.cache.get(
-                                                    staff
-                                                ).user.tag
-                                        )
-                                        .join('\n')
-                                    : 'There\'s no Staff Set in the database'
+                                          .map(
+                                              (staff) =>
+                                                  message.guild.members.cache.get(
+                                                      staff
+                                                  ).user.tag
+                                          )
+                                          .join('\n')
+                                    : "There's no Staff Set in the database"
                             )
                             .setFooter(
                                 `User ID: ${message.author.id}`,
                                 `${message.author.displayAvatarURL({
-                                    dynamic: true
+                                    dynamic: true,
                                 })}`
                             );
                         return message.channel.send(staffTeam);
                     } else {
-                        switch(args[1].toLowerCase()) {
+                        switch (args[1].toLowerCase()) {
                             case 'add':
-                                if(!args[2])
+                                if (!args[2])
                                     throw new Error(
-                                        'Please provide a Username, Mention or ID of the staff member you\'re wanting to add'
+                                        "Please provide a Username, Mention or ID of the staff member you're wanting to add"
                                     );
                                 const addingStaff = await usernameResolver(
                                     message,
@@ -73,13 +74,13 @@ module.exports = class extends Command {
                                 );
                                 await Guild.updateOne(
                                     {
-                                        guildID: message.guild.id
+                                        guildID: message.guild.id,
                                     },
                                     {
                                         staffMembers: [
                                             ...gSettings.staffMembers,
-                                            addingStaff.id
-                                        ]
+                                            addingStaff.id,
+                                        ],
                                     }
                                 ).then(() => {
                                     message.reply(
@@ -88,9 +89,9 @@ module.exports = class extends Command {
                                 });
                                 break;
                             case 'remove':
-                                if(!args[2])
+                                if (!args[2])
                                     throw new Error(
-                                        'Please provide a Username, Mention or ID of the staff member you\'re wanting to add'
+                                        "Please provide a Username, Mention or ID of the staff member you're wanting to add"
                                     );
                                 const removingStaff = await usernameResolver(
                                     message,
@@ -104,12 +105,12 @@ module.exports = class extends Command {
                                 );
                                 await Guild.updateOne(
                                     {
-                                        guildID: message.guild.id
+                                        guildID: message.guild.id,
                                     },
                                     {
                                         staffMembers: [
-                                            ...gSettings.staffMembers
-                                        ]
+                                            ...gSettings.staffMembers,
+                                        ],
                                     }
                                 ).then(() => {
                                     message.reply(
@@ -121,12 +122,12 @@ module.exports = class extends Command {
                     }
                     break;
                 case 'guild':
-                    if(!args[1]) {
+                    if (!args[1]) {
                         const embed = new MessageEmbed()
                             .setAuthor(
                                 `${message.author.tag}`,
                                 `${message.author.displayAvatarURL({
-                                    dynamic: true
+                                    dynamic: true,
                                 })}`
                             )
                             .setColor(settings.primaryColor)
@@ -166,7 +167,7 @@ module.exports = class extends Command {
                             .setFooter(
                                 `User ID: ${message.author.id}`,
                                 `${message.author.displayAvatarURL({
-                                    dynamic: true
+                                    dynamic: true,
                                 })}`
                             );
                         return message.channel.send(embed);
@@ -188,10 +189,10 @@ module.exports = class extends Command {
                             'staffBumpingChannel',
                             'communityProjectsCategory',
                             'communityProjectsLimit',
-                            'communityRequiredRole'
+                            'communityRequiredRole',
                         ];
 
-                        if(!settings.includes(type)) {
+                        if (!settings.includes(type)) {
                             throw new Error(
                                 `Please specify the correct settings you're wThng to modify\n\n\`\`\`${settings.join(
                                     '\n'
@@ -199,27 +200,26 @@ module.exports = class extends Command {
                             );
                         }
 
-                        if(
+                        if (
                             type === 'communityProjectsCategory' ||
                             type === 'programmingCategory' ||
                             type === 'bumpingChannel' ||
                             type === 'staffBumpingChannel'
                         ) {
-                            const channel = message.guild?.channels.cache.get(
-                                args[2]
-                            );
-                            if(!channel && args[2]) {
+                            const channel =
+                                await message.guild.channels.cache.get(args[2]);
+                            if (!channel && args[2]) {
                                 throw new Error(
                                     'The 3rd parameter you provided is not a category nor channel id.'
                                 );
                             }
-                            if(channel && type) {
-                                Guild.updateOne(
+                            if (channel && type) {
+                                await Guild.updateOne(
                                     { guildID: message.guild.id },
                                     { [type]: channel.id }
                                 );
                                 let change;
-                                if(
+                                if (
                                     channel?.type === 'category' ||
                                     channel.type === 'voice'
                                 ) {
@@ -232,7 +232,7 @@ module.exports = class extends Command {
                                 );
                             } else {
                                 const settings = await message.guild.settings();
-                                if(settings) {
+                                if (settings) {
                                     const chan =
                                         message.guild?.channels.resolve(
                                             settings[type]
@@ -244,13 +244,13 @@ module.exports = class extends Command {
                                     );
                                 }
                             }
-                        } else if(
+                        } else if (
                             type === 'bankerRole' ||
                             type === 'communityRequiredRole'
                         ) {
-                            if(!args[2]) {
+                            if (!args[2]) {
                                 const settings = await message.guild.settings();
-                                if(settings) {
+                                if (settings) {
                                     const role = message.guild?.roles.resolve(
                                         settings[type]
                                     );
@@ -268,7 +268,7 @@ module.exports = class extends Command {
                                     message,
                                     args[2]
                                 );
-                                if(args[2] && role) {
+                                if (args[2] && role) {
                                     await Guild.updateOne(
                                         { guildID: message.guild.id },
                                         { [type]: role.id }
@@ -280,37 +280,44 @@ module.exports = class extends Command {
                                     await message.reply(embed);
                                 }
                             }
-                        } else if(type === 'communityProjectsLimit') {
-                            if(!args[2]) {
+                        } else if (type === 'communityProjectsLimit') {
+                            if (!args[2]) {
                                 const settings = await message.guild.settings();
-                                if(settings) {
+                                if (settings) {
                                     await message.reply(
                                         `The community project limit is ${settings[type]}!`
                                     );
                                 }
                             } else {
-                                if(isNaN(args[2] as unknown as number)) throw new Error('Please provide a number for the limit');
+                                if (isNaN(args[2] as unknown as number))
+                                    throw new Error(
+                                        'Please provide a number for the limit'
+                                    );
                                 else {
                                     await Guild.updateOne(
                                         { guildID: message.guild.id },
-                                        { communityProjectsLimit: parseInt(args[2]) }
+                                        {
+                                            communityProjectsLimit: parseInt(
+                                                args[2]
+                                            ),
+                                        }
                                     );
                                     await message.reply(
                                         `Alrighty! The community project limit is ${args[2]}!`
                                     );
                                 }
                             }
-                        } else if(type === 'reputationSystem') {
-                            if(!args[2]) {
+                        } else if (type === 'reputationSystem') {
+                            if (!args[2]) {
                                 const settings = await message.guild.settings();
-                                if(settings) {
+                                if (settings) {
                                     await message.reply(
                                         `The current channel for type \`${type}\` is ${settings[type]}!`
                                     );
                                 }
                             } else {
                                 const correctValues = ['true', 'false'];
-                                if(!correctValues.includes(args[2]))
+                                if (!correctValues.includes(args[2]))
                                     throw new Error(
                                         'Please provide whether or not it should be true (to enable) or false (to disable)'
                                     );
@@ -329,7 +336,9 @@ module.exports = class extends Command {
                     break;
             }
         } else {
-            throw new Error(`You must provide a few arguements\n\n\`Example: //settings ${this.usage}\``);
+            throw new Error(
+                `You must provide a few arguements\n\n\`Example: //settings ${this.usage}\``
+            );
         }
     }
 };
