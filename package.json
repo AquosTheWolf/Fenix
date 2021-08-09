@@ -1,0 +1,39 @@
+{
+	"name": "bot",
+	"version": "0.0.1",
+	"description": "Discord API Wrapper",
+	"license": "GPL-3.0-or-later",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"repository": "https://github.com/FurDevs-Community/Bot",
+	"bugs": "https://github.com/FurDevs-Community/Bot/issues",
+	"homepage": "https://github.com/FurDevs-Community/Bot#readme",
+	"author": "Daryl Ronningen <relms@relms.dev>",
+	"maintainers": [],
+	"contributors": [],
+	"engines": {
+		"node": ">=16.6.0"
+	},
+	"scripts": {
+		"build": "tsc",
+		"lint": "eslint --format=pretty src",
+		"lint:fix": "eslint --format=pretty src --fix",
+		"run": "node dist/index.js"
+	},
+	"dependencies": {
+		"bufferutil": "^4.0.3",
+		"discord.js": "^13.0.1",
+		"utf-8-validate": "^5.0.5",
+		"zlib-sync": "^0.1.7"
+	},
+	"devDependencies": {
+		"@types/eslint": "^7.28.0",
+		"@typescript-eslint/eslint-plugin": "^4.29.1",
+		"@typescript-eslint/parser": "^4.29.1",
+		"@typescript-eslint/typescript-estree": "^4.29.1",
+		"eslint": "^7.32.0",
+		"eslint-formatter-pretty": "^4.1.0",
+		"eslint-plugin-unicorn": "^35.0.0",
+		"typescript": "^4.3.5"
+	}
+}

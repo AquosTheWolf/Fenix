@@ -1,0 +1,48 @@
+{
+	"compilerOptions": {
+		"declaration": true,
+		"lib": [
+			"ES2021",
+			"DOM"
+		],
+		"module": "CommonJS",
+		"outDir": "dist",
+		"removeComments": false,
+		"target": "ES2021",
+		"alwaysStrict": true,
+		"noImplicitAny": true,
+		"noImplicitThis": true,
+		"strict": true,
+		"strictBindCallApply": true,
+		"strictFunctionTypes": true,
+		"strictNullChecks": true,
+		"strictPropertyInitialization": true,
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitReturns": true,
+		"noPropertyAccessFromIndexSignature": true,
+		"noUncheckedIndexedAccess": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"allowUnreachableCode": false,
+		"allowUnusedLabels": false,
+		"disableSizeLimit": true,
+		"explainFiles": false,
+		"extendedDiagnostics": false,
+		"forceConsistentCasingInFileNames": true,
+		"importsNotUsedAsValues": "error",
+		"listEmittedFiles": false,
+		"listFiles": false,
+		"newLine": "lf",
+		"noEmitOnError": false,
+		"preserveConstEnums": true,
+		"traceResolution": false,
+		"moduleResolution": "Node"
+	},
+	"include": [
+		"src/**/*.ts"
+	]
+}
