@@ -446,6 +446,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash@npm:^4.14.172":
+  version: 4.14.172
+  resolution: "@types/lodash@npm:4.14.172"
+  checksum: 5fc51ea40d7e455bd1c760bcc60c9e81f82d85988666d4d4969bd8311367c63bbf1fe2be48755ba87836710e45fff94014ec164ebe6ccaa72815014981152434
+  languageName: node
+  linkType: hard
+
 "@types/minimatch@npm:*":
   version: 3.0.5
   resolution: "@types/minimatch@npm:3.0.5"
@@ -474,6 +481,13 @@ __metadata:
     "@types/glob": "*"
     "@types/node": "*"
   checksum: 7c921220715d969c365b4fa37de9d0578aaf0ff78d445d4d13035cfc5edee76f392b9356291af5176cded5f0482370ef40608e55d502054059bf16425c39e868
+  languageName: node
+  linkType: hard
+
+"@types/stack-trace@npm:^0.0.29":
+  version: 0.0.29
+  resolution: "@types/stack-trace@npm:0.0.29"
+  checksum: 2dcfdf8f10e250a76e43efe6d3e05a463b4e22ca290dbb423ec14fa21f57f94ef0cc8ba19ed3394c448218d9ddd9f7cd9adea131fb6572aa2d484b1cf7f043aa
   languageName: node
   linkType: hard
 
@@ -785,7 +799,9 @@ __metadata:
   resolution: "bot@workspace:."
   dependencies:
     "@types/eslint": ^7.28.0
+    "@types/lodash": ^4.14.172
     "@types/rimraf": ^3.0.1
+    "@types/stack-trace": ^0.0.29
     "@typescript-eslint/eslint-plugin": ^4.29.1
     "@typescript-eslint/parser": ^4.29.1
     "@typescript-eslint/typescript-estree": ^4.29.1
@@ -794,6 +810,7 @@ __metadata:
     eslint: ^7.32.0
     eslint-formatter-pretty: ^4.1.0
     eslint-plugin-unicorn: ^35.0.0
+    lodash: ^4.17.21
     rimraf: ^3.0.2
     stack-trace: ^1.0.0-pre1
     typescript: ^4.3.5
