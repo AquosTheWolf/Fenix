@@ -40,7 +40,8 @@
 		"noEmitOnError": false,
 		"preserveConstEnums": true,
 		"traceResolution": false,
-		"moduleResolution": "Node"
+		"moduleResolution": "Node",
+		"resolveJsonModule": true
 	},
 	"include": [
 		"src/**/*.ts"
