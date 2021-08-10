@@ -34,6 +34,7 @@ export const logger = winston.createLogger({
 			dirname: 'logs',
 			filename: 'exceptions.%DATE%',
 		}),
+		new winston.transports.Console(),
 	],
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
@@ -47,5 +48,6 @@ export const logger = winston.createLogger({
 			dirname: 'logs',
 			filename: 'rejections.%DATE%',
 		}),
+		new winston.transports.Console(),
 	],
 });

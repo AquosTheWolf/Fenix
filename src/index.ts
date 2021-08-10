@@ -5,6 +5,9 @@ import { logger } from './lib/utils/logger';
 
 const client = new Client({
 	intents: ['GUILDS'],
+	ws: {
+		compress: true,
+	},
 });
 
 client.on('ready', () => {
