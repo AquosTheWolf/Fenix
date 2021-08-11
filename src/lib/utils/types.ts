@@ -7,7 +7,6 @@ export interface ICommandOptions {
 	group?: string;
 	name?: string;
 	ownerOnly?: boolean;
-	registerAsSlashCommand?: boolean;
 	runIn?: 'both' | 'dms' | 'servers';
 	shortDescription: string;
 	usage?: string;
@@ -18,6 +17,6 @@ export interface ICommandArgsOptions {
 	description: string;
 	name: string;
 	optional?: boolean;
-	options?: ICommandArgsOptions;
+	options?: ICommandArgsOptions[];
 	type: ApplicationCommandOptionType;
 }
