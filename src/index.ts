@@ -1,9 +1,9 @@
 import './lib/utils/augments';
 
-import { SlashCommandBuilder } from '@discordjs/builders';
 import { REST } from '@discordjs/rest';
 import { APIApplicationCommand, Routes } from 'discord-api-types/v9';
-import { ApplicationCommand, ApplicationCommandOptionData, Collection } from 'discord.js';
+import { ApplicationCommand, ApplicationCommandData, ApplicationCommandOptionData, Collection } from 'discord.js';
+import _ from 'lodash';
 
 import { owner, token } from '../config.json';
 import { FenixClient } from './lib/fenixClient';
@@ -13,6 +13,7 @@ import { walkDir } from './lib/utils/utils';
 import type Command from './lib/structures/command';
 
 const commandCooldowns: Collection<string, Collection<string, number>> = new Collection();
+const slashCommands: Collection<string, ApplicationCommand> = new Collection();
 let isBotReady = false;
 
 const client = new FenixClient({
@@ -23,6 +24,15 @@ const client = new FenixClient({
 });
 
 client.once('ready', async () => {
+	logger.info('Getting commands from Discord API...');
+
+	const getCommands = await new REST({ version: '9' }).setToken(token).get(Routes.applicationCommands(client.application!.id)) as APIApplicationCommand[];
+	getCommands.forEach((val) => {
+		const application = new ApplicationCommand(client, val);
+
+		slashCommands.set(application.id, application);
+	});
+
 	logger.info('Loading Commands...');
 
 	try {
@@ -32,21 +42,12 @@ client.once('ready', async () => {
 			if (file.endsWith('js')) {
 				// eslint-disable-next-line @typescript-eslint/no-var-requires
 				const fileCommand = require(file);
-
 				const command: Command = new fileCommand['default'](client, file);
-
 				client.commands.set(command.options.name!, command);
 
-				const getCommands = await new REST({ version: '9' }).setToken(token).get(Routes.applicationCommands(client.application!.id)) as APIApplicationCommand[];
-				getCommands.forEach((val) => {
-					const application = new ApplicationCommand(client, val);
+				if (!slashCommands.find((int) => int.name === command.options.name?.toLowerCase())) {
+					logger.debug(`Creating new command ${command.options.name}`);
 
-					client.application?.commands.cache.set(application.id, application);
-				});
-
-				// TODO: Delete commands for which don't exist anymore.
-				// TODO: Figure out a way to edit commands when data changes.
-				if (!client.application?.commands.cache.find((int) => int.name === command.options.name?.toLowerCase())) {
 					const commandOptions: ApplicationCommandOptionData[] = [];
 
 					command.options.args?.forEach((arg) => {
@@ -65,10 +66,42 @@ client.once('ready', async () => {
 						description: command.options.shortDescription!,
 						options: commandOptions,
 					});
+				} else {
+					const commandOptions: ApplicationCommandOptionData[] = [];
+
+					command.options.args?.forEach((arg) => {
+						commandOptions.push({
+							name: arg.name,
+							description: arg.description,
+							type: arg.type,
+							choices: arg.acceptedValues,
+							required: !arg.optional,
+							options: arg.options,
+						});
+					});
+
+					const fileCommand: ApplicationCommandData = {
+						name: command.options.name!,
+						description: command.options.shortDescription!,
+						options: commandOptions,
+					};
+
+					const cacheCommand1 = slashCommands.find((cmd) => cmd.name === fileCommand.name)?.toJSON() as ApplicationCommandData;
+					const cacheCommand2 = { name: cacheCommand1.name, description: cacheCommand1.description, options: cacheCommand1.options };
+
+					if (!_.isEqual(fileCommand, cacheCommand2)) {
+						logger.debug(`Editing command ${fileCommand.name}`);
+
+						client.application?.commands.edit(slashCommands.find((int) => int.name === command.options.name?.toLowerCase())!, fileCommand);
+					}
 				}
 
 				logger.debug(`Loaded command ${command.options.name}`);
 			}
+		});
+
+		slashCommands.forEach((command) => {
+			if (!client.commands.find((cmd) => command.name === cmd.options.name)) client.application?.commands.delete(command.id);
 		});
 
 		logger.info(`Finished loading commands! Found ${client.commands.size} commands.`);

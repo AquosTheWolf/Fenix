@@ -301,19 +301,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@discordjs/builders@npm:^0.5.0":
-  version: 0.5.0
-  resolution: "@discordjs/builders@npm:0.5.0"
-  dependencies:
-    "@sindresorhus/is": ^4.0.1
-    discord-api-types: ^0.22.0
-    ow: ^0.27.0
-    ts-mixer: ^6.0.0
-    tslib: ^2.3.0
-  checksum: 064bd547b63a8cc593b3f8b0e290cb1c27cf335a89addd77aeb078055a92201a6905d0a67919004da0c915d01c0104383c5c06a07df751e4a4e921d7a000f6e3
-  languageName: node
-  linkType: hard
-
 "@discordjs/collection@npm:^0.1.6":
   version: 0.1.6
   resolution: "@discordjs/collection@npm:0.1.6"
@@ -860,7 +847,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "bot@workspace:."
   dependencies:
-    "@discordjs/builders": ^0.5.0
     "@discordjs/rest": ^0.1.0-canary.0
     "@types/eslint": ^7.28.0
     "@types/lodash": ^4.14.172

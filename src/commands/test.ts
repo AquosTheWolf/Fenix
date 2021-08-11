@@ -5,6 +5,7 @@ import type { Client, CommandInteraction } from 'discord.js';
 export default class extends Command {
 	public constructor(client: Client, file: string) {
 		super(client, file, {
+			name: 'test1',
 			shortDescription: 'test owo',
 		});
 	}
