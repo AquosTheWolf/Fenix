@@ -7,7 +7,6 @@ export default class extends Command {
 		super(client, file, {
 			shortDescription: 'test owo',
 		});
-
 	}
 
 	public run(interaction: CommandInteraction): void | Promise<void> {

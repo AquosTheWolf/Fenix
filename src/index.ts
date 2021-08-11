@@ -1,6 +1,9 @@
 import './lib/utils/augments';
 
-import { ApplicationCommandOptionData, Collection } from 'discord.js';
+import { SlashCommandBuilder } from '@discordjs/builders';
+import { REST } from '@discordjs/rest';
+import { APIApplicationCommand, Routes } from 'discord-api-types/v9';
+import { ApplicationCommand, ApplicationCommandOptionData, Collection } from 'discord.js';
 
 import { owner, token } from '../config.json';
 import { FenixClient } from './lib/fenixClient';
@@ -25,7 +28,7 @@ client.once('ready', async () => {
 	try {
 		const files = await walkDir(`${__dirname}/commands`);
 
-		files.forEach((file) => {
+		files.forEach(async (file) => {
 			if (file.endsWith('js')) {
 				// eslint-disable-next-line @typescript-eslint/no-var-requires
 				const fileCommand = require(file);
@@ -34,7 +37,13 @@ client.once('ready', async () => {
 
 				client.commands.set(command.options.name!, command);
 
-				// TODO: Figure out a way to fetch all the commands from discord API in one go.
+				const getCommands = await new REST({ version: '9' }).setToken(token).get(Routes.applicationCommands(client.application!.id)) as APIApplicationCommand[];
+				getCommands.forEach((val) => {
+					const application = new ApplicationCommand(client, val);
+
+					client.application?.commands.cache.set(application.id, application);
+				});
+
 				// TODO: Delete commands for which don't exist anymore.
 				// TODO: Figure out a way to edit commands when data changes.
 				if (!client.application?.commands.cache.find((int) => int.name === command.options.name?.toLowerCase())) {
