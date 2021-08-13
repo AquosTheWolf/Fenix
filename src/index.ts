@@ -130,16 +130,25 @@ client.on('interactionCreate', async (interaction) => {
 
 	if (findCommand.options.ownerOnly && interaction.user.id !== owner) {
 		await interaction.reply('This command can be ran by the bot owner only!');
+
+		logger.notice(`$${interaction.user.username} tried running command ${findCommand.options.name} but doesn't have the permissions to.`);
+
 		return;
 	}
 
 	if ((findCommand.options.runIn === 'dms') && interaction.channel?.type !== 'DM') {
 		await interaction.reply('This command can only be ran in DMs!');
+
+		logger.notice(`$${interaction.user.username} tried running command ${findCommand.options.name} in a server but the command can only be ran in a DM.`);
+
 		return;
 	}
 
 	if ((findCommand.options.runIn === 'servers') && interaction.channel?.type !== 'GUILD_TEXT') {
 		await interaction.reply('This command can only be ran in a Server!');
+
+		logger.notice(`$${interaction.user.username} tried running command ${findCommand.options.name} in a DM but the command can only be ran in a Server.`);
+
 		return;
 	}
 
