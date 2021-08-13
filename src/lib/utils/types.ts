@@ -1,4 +1,4 @@
-import type { ApplicationCommandOptionChoice, ApplicationCommandOptionType } from 'discord.js';
+import type { CommandOptionChoiceResolvableType, CommandOptionDataTypeResolvable } from 'discord.js';
 
 export interface ICommandOptions {
 	args?: ICommandArgsOptions[];
@@ -13,10 +13,10 @@ export interface ICommandOptions {
 }
 
 export interface ICommandArgsOptions {
-	acceptedValues?: ApplicationCommandOptionChoice[];
+	choices?: CommandOptionChoiceResolvableType[];
 	description: string;
 	name: string;
-	optional?: boolean;
 	options?: ICommandArgsOptions[];
-	type: ApplicationCommandOptionType;
+	required?: boolean;
+	type: CommandOptionDataTypeResolvable;
 }

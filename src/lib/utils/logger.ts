@@ -34,11 +34,6 @@ export const logger = winston.createLogger({
 			dirname: 'logs',
 			filename: 'exceptions.%DATE%',
 		}),
-		new winston.transports.Console(),
-	],
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	rejectionHandlers: [
 		new DailyRotateFile({
 			zippedArchive: true,
 			maxSize: '20m',
@@ -46,7 +41,6 @@ export const logger = winston.createLogger({
 			eol: '\n',
 			extension: '.log',
 			dirname: 'logs',
-			filename: 'rejections.%DATE%',
 		}),
 		new winston.transports.Console(),
 	],

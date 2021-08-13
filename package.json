@@ -25,7 +25,7 @@
 		"@discordjs/rest": "^0.1.0-canary.0",
 		"bufferutil": "^4.0.3",
 		"discord-api-types": "^0.22.0",
-		"discord.js": "^13.0.1",
+		"discord.js": "^13.1.0",
 		"lodash": "^4.17.21",
 		"stack-trace": "^1.0.0-pre1",
 		"utf-8-validate": "^5.0.5",

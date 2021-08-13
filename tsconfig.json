@@ -41,7 +41,9 @@
 		"preserveConstEnums": true,
 		"traceResolution": false,
 		"moduleResolution": "Node",
-		"resolveJsonModule": true
+		"resolveJsonModule": true,
+		"inlineSourceMap": true,
+		"inlineSources": true
 	},
 	"include": [
 		"src/**/*.ts"

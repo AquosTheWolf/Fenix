@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import './lib/utils/augments';
 
 import { REST } from '@discordjs/rest';
 import { APIApplicationCommand, Routes } from 'discord-api-types/v9';
-import { ApplicationCommand, ApplicationCommandData, ApplicationCommandOptionData, Collection } from 'discord.js';
+import { ApplicationCommand, ApplicationCommandOptionData, ChatInputApplicationCommandData, Collection } from 'discord.js';
 import _ from 'lodash';
 
 import { owner, token } from '../config.json';
@@ -45,7 +46,7 @@ client.once('ready', async () => {
 				const command: Command = new fileCommand['default'](client, file);
 				client.commands.set(command.options.name!, command);
 
-				if (!slashCommands.find((int) => int.name === command.options.name?.toLowerCase())) {
+				if (!slashCommands.find((int) => int.name === command.options.name)) {
 					logger.debug(`Creating new command ${command.options.name}`);
 
 					const commandOptions: ApplicationCommandOptionData[] = [];
@@ -55,8 +56,9 @@ client.once('ready', async () => {
 							name: arg.name,
 							description: arg.description,
 							type: arg.type,
-							choices: arg.acceptedValues,
-							required: !arg.optional,
+							choices: arg.choices,
+							required: arg.required,
+							// @ts-ignore
 							options: arg.options,
 						});
 					});
@@ -74,25 +76,26 @@ client.once('ready', async () => {
 							name: arg.name,
 							description: arg.description,
 							type: arg.type,
-							choices: arg.acceptedValues,
-							required: !arg.optional,
+							choices: arg.choices,
+							required: arg.required,
+							// @ts-ignore
 							options: arg.options,
 						});
 					});
 
-					const fileCommand: ApplicationCommandData = {
+					const fileCommand: ChatInputApplicationCommandData = {
 						name: command.options.name!,
 						description: command.options.shortDescription!,
 						options: commandOptions,
 					};
 
-					const cacheCommand1 = slashCommands.find((cmd) => cmd.name === fileCommand.name)?.toJSON() as ApplicationCommandData;
+					const cacheCommand1 = slashCommands.find((cmd) => cmd.name === fileCommand.name)?.toJSON() as ChatInputApplicationCommandData;
 					const cacheCommand2 = { name: cacheCommand1.name, description: cacheCommand1.description, options: cacheCommand1.options };
 
 					if (!_.isEqual(fileCommand, cacheCommand2)) {
 						logger.debug(`Editing command ${fileCommand.name}`);
 
-						client.application?.commands.edit(slashCommands.find((int) => int.name === command.options.name?.toLowerCase())!, fileCommand);
+						client.application?.commands.edit(slashCommands.find((int) => int.name === command.options.name)!, fileCommand);
 					}
 				}
 
@@ -101,12 +104,16 @@ client.once('ready', async () => {
 		});
 
 		slashCommands.forEach((command) => {
-			if (!client.commands.find((cmd) => command.name === cmd.options.name)) client.application?.commands.delete(command.id);
+			if (!client.commands.find((cmd) => command.name === cmd.options.name)) {
+				client.application?.commands.delete(command.id);
+
+				logger.debug(`Deleting non-existent command ${command.name}`);
+			}
 		});
 
 		logger.info(`Finished loading commands! Found ${client.commands.size} commands.`);
 	} catch (err) {
-		logger.crit(`An error has occurred while attempting to load command files! Please see error below\n${(err as Error).message}`);
+		logger.error(`An error has occurred while attempting to load command files! Please see error below\n${(err as Error).message}`);
 	}
 
 	logger.info('Bot is ready!');
@@ -165,7 +172,7 @@ client.on('interactionCreate', async (interaction) => {
 		await findCommand.run(interaction);
 		logger.info(`Finished running ${findCommand.options.name} in ${interaction.guild ? interaction.guild.name : `${interaction.user.username} DMs`}`);
 	} catch (e) {
-		logger.crit(`An error has occurred while running ${findCommand.options.name}!\n${(e as Error).message}`);
+		logger.error(`An error has occurred while running ${findCommand.options.name}!\n${(e as Error).message}`);
 
 		await interaction.reply(`An error has ocurred while running this command. Please pass this error on to the bot developers\n${(e as Error).message}`);
 	}
