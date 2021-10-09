@@ -60,7 +60,7 @@ export default class InteractionCreateEvent extends BaseEvent {
             }
 
             if (cmd.ownerOnly) {
-                if (this.client.config.owner !== interaction.user.id)
+                if (client.config.owner !== interaction.user.id)
                     return interaction.reply({
                         content: `:warning: This command can be only ran by the Owner of the Bot!`,
                         ephemeral: true,
@@ -76,7 +76,7 @@ export default class InteractionCreateEvent extends BaseEvent {
                     .setDescription(`${e}`)
                     .setFooter(
                         `If this isn't a fixable problem on your side please dm ${
-                            client.users.cache.get(this.client.config.owner)!.tag
+                            client.users.cache.get(client.config.owner)!.tag
                         }`,
                     );
                 interaction.reply({ embeds: [embed] });

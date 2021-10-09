@@ -7,7 +7,7 @@ export default class ReadyEvent extends BaseEvent {
 		super(client, {
 			name: "ready",
 			enabled: true,
-			event: "ready"
+			event: "ready",
 		});
 	}
 	async run(client: FenixClient) {
@@ -16,7 +16,7 @@ export default class ReadyEvent extends BaseEvent {
 			client._logger.error("Cannot find the guild!");
 			process.exit();
 		}
-	
+
 		const fullPerms: GuildApplicationCommandPermissionData[] = [];
 		await guild!.commands.set(client.arrayOfSlashCommands).then(async (cmd) => {
 			client._logger.info("Setting (/) Permissions");
@@ -36,7 +36,7 @@ export default class ReadyEvent extends BaseEvent {
 						id: command.id,
 						permissions: [
 							{
-								id: this.client.config.owner,
+								id: client.config.owner,
 								permission: true,
 								type: "USER",
 							},
